@@ -1,4 +1,3 @@
-#include <SDL3/SDL_events.h>
 #define SDL_MAIN_USE_CALLBACKS 1
 
 #include <SDL3/SDL.h>
@@ -6,6 +5,7 @@
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3/SDL_events.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_stdinc.h>
@@ -14,12 +14,10 @@
 
 #include "app_metadata.h"
 #include "delta_time.h"
-#include "render.h"
+#include "video/render.h"
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
-
-double delta = 1;
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 	for (int i = 1; i < argc; i++) SDL_LogInfo(0, "Passed arguement: %s", argv[i]);
