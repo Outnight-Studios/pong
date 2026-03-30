@@ -1,5 +1,5 @@
 #Project Configuration
-TARGET        = c_project
+TARGET        = sdl_game
 CC            = cc
 SRC_DIR       = ./src
 INC_DIR       = ./inc
@@ -10,16 +10,11 @@ BIN_DIR       = ./bin
 NPROC         := $(shell nproc 2>/dev/null || getconf _NPROCESSORS_ONLN || ls /dev/cpu/ | wc -l || echo 1)
 MAKEFLAGS     += -j$(NPROC)
 
-#Recursive helpers
 #Find all files matching a pattern recursively: $(call rwildcard,<dir>,<pattern>)
 rwildcard     = $(foreach d,$(wildcard $(addsuffix /*,$1)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
-#List a directory and all its subdirectories recursively: $(call rsubdirs,<dir>)
-rsubdirs      = $1 $(foreach d,$(wildcard $(addsuffix /*,$1)),$(if $(wildcard $d/.),$(call rsubdirs,$d)))
 
-#File Discovery (recursive: includes all subdirectories under src/ and inc/)
+#File Discovery
 SRCS          = $(call rwildcard,$(SRC_DIR),*.c)
-INC_DIRS      = $(call rsubdirs,$(INC_DIR))
-INC_FLAGS     = $(addprefix -I,$(INC_DIRS))
 
 #Per-build object lists (each build has its own subdirectory)
 DEBUG_OBJS    = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/debug/%.o,$(SRCS))
@@ -44,19 +39,17 @@ release: $(BIN_DIR)/$(TARGET)-release
 native: CFLAGS = $(COMMON_FLAGS) $(NATIVE_FLAGS)
 native: $(BIN_DIR)/$(TARGET)-native
 
-#Create directories (order-only prerequisites prevent race conditions under -j)
-$(OBJ_DIR)/debug $(BIN_DIR) $(OBJ_DIR)/release $(OBJ_DIR)/native:
-	mkdir -p $@
-
 #Compile objects - auto-generate dependency files with -MMD -MP
-#mkdir -p on the output directory handles nested src/ subdirectories
 $(OBJ_DIR)/debug/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -MMD -MP -MF $(@:.o=.d) -c $< -o $@
 
 $(OBJ_DIR)/release/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -MMD -MP -MF $(@:.o=.d) -c $< -o $@
 
 $(OBJ_DIR)/native/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -MMD -MP -MF $(@:.o=.d) -c $< -o $@
 
 #Main targets
@@ -81,7 +74,8 @@ init:
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-#Initialise .clangd to see all include directories (inc/ and its subdirectories)
+#Initialise .clangd to see `./inc/`
+CLANGD_FLAGS := -I.$(INC_DIR) $(COMMON_FLAGS)
 clangd:
 	@echo "CompileFlags:" > .clangd
 	@echo "  Add:" >> .clangd
