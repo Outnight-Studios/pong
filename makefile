@@ -1,5 +1,5 @@
 #Project Configuration
-TARGET        = sdl_game
+TARGET        = pong
 CC            = cc
 SRC_DIR       = ./src
 INC_DIR       = ./inc
@@ -22,9 +22,9 @@ RELEASE_OBJS  = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/release/%.o,$(SRCS))
 NATIVE_OBJS   = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/native/%.o,$(SRCS))
 
 #Compiler Flags
-COMMON_FLAGS  = -I$(INC_DIR) -Wall -Wextra -Wpedantic -fdiagnostics-color=always -lSDL3
+COMMON_FLAGS  = -I$(abspath $(INC_DIR)) -Wall -Wextra -Wpedantic -fdiagnostics-color=always -lSDL3
 DEBUG_FLAGS   = -Og -ggdb3
-RELEASE_FLAGS = -O3 -flto -march=generic -static
+RELEASE_FLAGS = -O3 -flto -mtune=generic
 NATIVE_FLAGS  = -O3 -flto -march=native
 
 #Debug build
@@ -53,6 +53,9 @@ $(OBJ_DIR)/native/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -MMD -MP -MF $(@:.o=.d) -c $< -o $@
 
 #Main targets
+$(BIN_DIR):
+	@mkdir -p $@
+
 $(BIN_DIR)/$(TARGET)-debug: $(DEBUG_OBJS) | $(BIN_DIR)
 	$(CC) $(CFLAGS) $^ -o $@
 
@@ -75,11 +78,10 @@ clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
 #Initialise .clangd to see `./inc/`
-CLANGD_FLAGS := -I.$(INC_DIR) $(COMMON_FLAGS)
 clangd:
 	@echo "CompileFlags:" > .clangd
 	@echo "  Add:" >> .clangd
-	@for flag in $(CLANGD_FLAGS); do echo "    - $$flag" >> .clangd; done
+	@for flag in $(COMMON_FLAGS); do echo "    - $$flag" >> .clangd; done
 
 #Help message
 help:

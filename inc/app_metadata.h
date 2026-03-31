@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include <SDL3/SDL_init.h>
 
-#define APP_NAME "sdl_game"
+#define APP_NAME "pong"
 #define APP_VERSION "0.0.0"
-#define APP_IDENTIFIER "eu.outnight.sdl_game"
+#define APP_IDENTIFIER "eu.outnight.pong"
 #define APP_CREATOR "Outnight Studios"
 #define APP_COPYRIGHT "Copyright (c) Outnight Studios 2026"
 #define APP_URL "https://outnight.eu"

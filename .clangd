@@ -1,7 +1,6 @@
 CompileFlags:
   Add:
-    - -I../inc
-    - -I./inc
+    - -I/home/sot/pong/inc
     - -Wall
     - -Wextra
     - -Wpedantic
