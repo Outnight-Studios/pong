@@ -22,5 +22,5 @@ double deltaTime(void) {
 }
 
 double getTotalTime(void) {
-	return SDL_GetPerformanceCounter() / freq * 1000.0f;
+	return (double)((double)SDL_GetPerformanceCounter() / (double)SDL_GetPerformanceFrequency());
 }

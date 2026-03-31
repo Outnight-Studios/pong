@@ -3,8 +3,8 @@
 
 #include "logic/game_state.h"
 
-const int width = 800;
-const int height = 600;
+const int width = 800 * 1.4;
+const int height = 600 * 1.4;
 
 static const float scoreZoomMult = 4.2f;
 
