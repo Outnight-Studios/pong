@@ -31,6 +31,7 @@ typedef struct gameState {
 
 	float playerSpeed;
 	float pongSpeed;
+	float pongAcceleration;
 
 	unsigned int playerWidth;
 	unsigned int playerHeight;

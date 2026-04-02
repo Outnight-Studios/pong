@@ -4,6 +4,7 @@
 
 static const float playerSpeed = 0.70f;
 static const float pongSpeed = 0.25f;
+static const float pongAcceleration = 0.067f;
 
 static const unsigned int playerWidth = 8;
 static const unsigned int playerHeight = 95;
@@ -38,6 +39,7 @@ typedef struct gameState {
 
 	float playerSpeed;
 	float pongSpeed;
+	float pongAcceleration;
 
 	unsigned int playerWidth;
 	unsigned int playerHeight;
@@ -61,6 +63,7 @@ void gameStateInit(GameState *gameState, int w, int h, const bool *kbState, doub
 
 	gameState->playerSpeed = playerSpeed;
 	gameState->pongSpeed = pongSpeed;
+	gameState->pongAcceleration = pongAcceleration;
 
 	gameState->playerWidth = playerWidth;
 	gameState->playerHeight = playerHeight;
@@ -92,6 +95,11 @@ void gameStateInit(GameState *gameState, int w, int h, const bool *kbState, doub
 void gameStateReset(GameState *gameState) {
 	gameState->player_left.y = (int)(gameState->resolution.h/2);
 	gameState->player_left.y_direction = 0;
+
+
+	gameState->playerSpeed = playerSpeed;
+	gameState->pongSpeed = pongSpeed;
+
 
 	gameState->player_right.y = (int)(gameState->resolution.h/2);
 	gameState->player_right.y_direction = 0;

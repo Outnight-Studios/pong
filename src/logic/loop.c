@@ -1,8 +1,4 @@
 #include <SDL3/SDL_rect.h>
-#include <complex.h>
-#include <stdbool.h>
-
-#include <SDL3/SDL_keyboard.h>
 #include <SDL3/SDL_scancode.h>
 
 #include "logic/game_state.h"
@@ -63,10 +59,12 @@ void movePong(GameState *gameState) {
 		gameState->pongSides,
 	};
 
-	//If not stuck (i.e., already bouncing while satisfying the conditions to bounce), then bounce
+	//If not stuck (i.e., already bouncing while satisfying the conditions to bounce), then bounce and increase speed
 	if (!gameState->pong.stuck) {
 		if (SDL_HasRectIntersectionFloat(&left, &pong) || SDL_HasRectIntersectionFloat(&right, &pong)) {
 			gameState->pong.x_direction = -gameState->pong.x_direction;
+			gameState->pongSpeed *= (1.0f + gameState->pongAcceleration);
+			gameState->playerSpeed *= (1.0f + gameState->pongAcceleration);
 		}
 
 		//Bounce on top and bottom of screen
