@@ -1,5 +1,3 @@
-#include <SDL3/SDL_stdinc.h>
-#include <SDL3/SDL_timer.h>
 #define SDL_MAIN_USE_CALLBACKS 1
 
 #include <SDL3/SDL_error.h>
@@ -10,6 +8,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3/SDL_keyboard.h>
+#include <SDL3/SDL_stdinc.h>
 
 #include "app_metadata.h"
 #include "render.h"
