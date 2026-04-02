@@ -1,8 +1,0 @@
-CompileFlags:
-  Add:
-    - -I/home/sot/pong/inc
-    - -Wall
-    - -Wextra
-    - -Wpedantic
-    - -fdiagnostics-color=always
-    - -lSDL3
